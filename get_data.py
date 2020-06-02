@@ -25,7 +25,7 @@ def get_data(path="data"):
         else:
             print(f"\tDownloading {file}...")
             r = requests.get(url + file)
-            with open(os.path.join(path, file), "wb") as f:
+            with open(current_path, "wb") as f:
                 f.write(r.content)
 
 
