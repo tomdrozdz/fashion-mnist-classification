@@ -44,6 +44,7 @@ if __name__ == "__main__":
     
     k = 5
     
+    print("Running the k-nn algorithm...")
     accuracy = train_model(x_train, y_train, x_test, y_test, k)
     
     print(f"Accuracy for knn classifier (k={k}): {accuracy}")
