@@ -3,23 +3,21 @@ import os.path
 
 url = "http://fashion-mnist.s3-website.eu-central-1.amazonaws.com/"
 
-data = [
-    "train-images-idx3-ubyte.gz",
-    "train-labels-idx1-ubyte.gz",
-    "t10k-images-idx3-ubyte.gz",
-    "t10k-labels-idx1-ubyte.gz",
+suffixes = [
+    "-images-idx3-ubyte.gz",
+    "-labels-idx1-ubyte.gz",
 ]
 
-
-def get_data(path="data"):
+def get_data(path="data", kind="t10k"):    
     if not os.path.exists(path):
         os.makedirs(path)
 
-    print("Checking if data is downloaded:")
+    print(f"Checking if {kind} data is downloaded:")
 
-    for file in data:
+    for suffix in suffixes:
+        file = kind + suffix
         current_path = os.path.join(path, file)
-
+    
         if os.path.isfile(current_path):
             print(f"\t{file} already downloaded")
         else:
@@ -28,6 +26,9 @@ def get_data(path="data"):
             with open(current_path, "wb") as f:
                 f.write(r.content)
 
+def get_all_data(path="data"):
+    get_data(path, "train")
+    get_data(path, "t10k")
 
 if __name__ == "__main__":
-    get_data()
+    get_all_data()

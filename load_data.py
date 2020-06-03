@@ -6,7 +6,7 @@ import gzip
 import numpy as np
 
 
-def load_data(path="data", kind="train"):
+def load_data(path="data", kind="t10k"):
     labels_path = os.path.join(path, f"{kind}-labels-idx1-ubyte.gz")
     images_path = os.path.join(path, f"{kind}-images-idx3-ubyte.gz")
 
