@@ -19,7 +19,7 @@ def get_data(path="data"):
 
     for file in data:
         current_path = os.path.join(path, file)
-        
+
         if os.path.isfile(current_path):
             print(f"\t{file} already downloaded")
         else:
