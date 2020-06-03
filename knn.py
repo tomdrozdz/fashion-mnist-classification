@@ -22,7 +22,9 @@ def classification_accuracy(p_y_x, y_true):
     return accuracy / len(y_true)
 
 
-def classification_accuracy(x_train, y_train, x_test, y_test, k=5):
+def model_accuracy(x_train, y_train, x_test, y_test, k=5):
+    
+    # Normalization 0-1
     x_train = x_train / 255
     x_test = x_test / 255
 
@@ -45,6 +47,6 @@ if __name__ == "__main__":
     k = 5
 
     print("Running the k-nn algorithm...")
-    accuracy = classification_accuracy(x_train, y_train, x_test, y_test, k)
+    accuracy = model_accuracy(x_train, y_train, x_test, y_test, k)
 
     print(f"Accuracy for knn classifier (k={k}): {accuracy}")
