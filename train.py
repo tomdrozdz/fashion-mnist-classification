@@ -1,16 +1,18 @@
-from get_data import get_data
-from load_data import load_data
-
-data_path = "data"
 
 
-def train_network():
-    get_data(data_path)
-    x_train, y_train = load_data(data_path, "train")
-    x_test, y_test = load_data(data_path, "t10k")
 
+
+
+def train_network(x_train, y_train, x_test, y_test):
     print(len(x_train[1]))
 
 
 if __name__ == "__main__":
-    train_network()
+    from data import get_all_data, load_all_data
+    
+    data_path = "data"
+    
+    get_all_data(data_path)
+    (x_train, y_train), (x_test, y_test) = load_all_data(data_path)
+    
+    train_network(x_train, y_train, x_test, y_test)

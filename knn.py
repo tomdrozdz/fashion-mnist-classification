@@ -35,14 +35,12 @@ def classification_accuracy(x_train, y_train, x_test, y_test, k=5):
 
 
 if __name__ == "__main__":
-    from get_data import get_data
-    from load_data import load_data
+    from data import get_all_data, load_all_data
 
     data_path = "data"
 
-    get_data(data_path)
-    x_train, y_train = load_data(data_path, "train")
-    x_test, y_test = load_data(data_path, "t10k")
+    get_all_data(data_path)
+    (x_train, y_train), (x_test, y_test) = load_all_data(data_path)
 
     k = 5
 
