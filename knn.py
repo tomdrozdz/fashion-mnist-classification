@@ -23,11 +23,6 @@ def classification_accuracy(p_y_x, y_true):
 
 
 def model_accuracy(x_train, y_train, x_test, y_test, k=5):
-    
-    # Normalization 0-1
-    x_train = x_train / 255
-    x_test = x_test / 255
-
     distance = manhattan_distance(x_test, x_train)
     neighbours = sort_train_labels_knn(distance, y_train)
     probability = p_y_x_knn(neighbours, k)
@@ -44,6 +39,10 @@ if __name__ == "__main__":
     get_all_data(data_path)
     (x_train, y_train), (x_test, y_test) = load_all_data(data_path)
 
+    # Normalization 0-1
+    x_train = x_train / 255
+    x_test = x_test / 255
+    
     k = 5
 
     print("Running the k-nn algorithm...")
