@@ -34,15 +34,16 @@ def model_accuracy(x_train, y_train, x_test, y_test, k=5):
 if __name__ == "__main__":
     from data import get_all_data, load_all_data
 
-    data_path = "data"
+    get_all_data()
+    (x_train, y_train), (x_test, y_test) = load_all_data()
 
-    get_all_data(data_path)
-    (x_train, y_train), (x_test, y_test) = load_all_data(data_path)
+    x_train = x_train.reshape(-1, 784)
+    x_test = x_test.reshape(-1, 784)
 
     # Normalization 0-1
     x_train = x_train / 255
     x_test = x_test / 255
-    
+
     k = 5
 
     print("Running the k-nn algorithm...")

@@ -8,16 +8,17 @@ suffixes = [
     "-labels-idx1-ubyte.gz",
 ]
 
+data_path = "data"
 
-def get_data(path="data", kind="t10k"):
-    if not os.path.exists(path):
-        os.makedirs(path)
+def get_data(kind="t10k"):
+    if not os.path.exists(data_path):
+        os.makedirs(data_path)
 
     print(f"Checking if {kind} data is downloaded:")
 
     for suffix in suffixes:
         file = kind + suffix
-        current_path = os.path.join(path, file)
+        current_path = os.path.join(data_path, file)
 
         if os.path.isfile(current_path):
             print(f"\t{file} already downloaded")
@@ -28,19 +29,17 @@ def get_data(path="data", kind="t10k"):
                 f.write(r.content)
 
 
-def get_all_data(path="data"):
-    get_data(path, "train")
-    get_data(path, "t10k")
+def get_all_data():
+    get_data("train")
+    get_data("t10k")
 
 
-# Script copied from the fashion-mnist repository
-# Provided by the authors of the dataset
-def load_data(path="data", kind="t10k"):
+def load_data(kind="t10k"):
     import gzip
     import numpy as np
 
-    images_path = os.path.join(path, f"{kind + suffixes[0]}")
-    labels_path = os.path.join(path, f"{kind + suffixes[1]}")
+    images_path = os.path.join(data_path, kind + suffixes[0])
+    labels_path = os.path.join(data_path, kind + suffixes[1])
 
     with gzip.open(labels_path, "rb") as lbpath:
         labels = np.frombuffer(lbpath.read(), dtype=np.uint8, offset=8)
@@ -53,8 +52,8 @@ def load_data(path="data", kind="t10k"):
     return images, labels
 
 
-def load_all_data(path="data"):
-    return load_data(path, "train"), load_data(path, "t10k")
+def load_all_data():
+    return load_data("train"), load_data("t10k")
 
 
 def get_labels():
