@@ -1,4 +1,5 @@
 import numpy as np
+from utils import normalize
 
 M = 10
 
@@ -40,9 +41,8 @@ if __name__ == "__main__":
     x_train = x_train.reshape(-1, 784)
     x_test = x_test.reshape(-1, 784)
 
-    # Normalization 0-1
-    x_train = x_train / 255
-    x_test = x_test / 255
+    x_train = normalize(x_train)
+    x_test = normalize(x_test)
 
     k = 5
 

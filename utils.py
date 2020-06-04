@@ -1,6 +1,10 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
+# Normalization 0-1
+def normalize(x):
+    return x / 255
+
 # Utility for displaying the images
 def show_image(img, label):
     plt.imshow(img, cmap="gray")
@@ -9,6 +13,7 @@ def show_image(img, label):
     plt.show()
 
 
+# For displaying incorrect classifications
 def plot_image_prediction(img, label, predicted, prob_wrong, prob_right):
     plt.imshow(img, cmap="gray")
     plt.title(

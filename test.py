@@ -6,11 +6,11 @@ os.environ["TF_CPP_MIN_LOG_LEVEL"] = "1"
 ################################################################
 import tensorflow as tf
 from tensorflow import keras
-import matplotlib.pyplot as plt
 import numpy as np
 import itertools
 from sklearn.metrics import confusion_matrix
-from utils import plot_image_prediction, plot_predictions
+from utils import normalize, plot_image_prediction, plot_predictions
+import matplotlib.pyplot as plt
 
 
 def predict_classes(model, x_test, y_test):
@@ -29,11 +29,14 @@ def show_errors(x_test, y_test, y_pred, predictions, labels):
     imgs = imgs if imgs <= len(idxs) else len(idxs)
     idxs = np.random.choice(idxs, imgs)
 
+    x_test = x_test[idxs]
     y_test = y_test[idxs]
     y_pred = y_pred[idxs]
     predictions = predictions[idxs]
 
-    plt.figure(num="Incorrect classifications", figsize=(2 * 2 * cols, 2 * rows))
+    plt.figure(
+        num="Examples of incorrect classifications", figsize=(2 * 2 * cols, 2 * rows)
+    )
 
     for i in range(imgs):
         y_t, y_p, pred = y_test[i], y_pred[i], predictions[i]
@@ -85,8 +88,7 @@ if __name__ == "__main__":
     x_test, y_test = load_data("t10k")
     labels = get_labels()
 
-    # Normalization 0-1
-    x_test = x_test / 255
+    x_test = normalize(x_test)
 
     y_pred, predictions, accuracy = predict_classes(model, x_test, y_test)
 

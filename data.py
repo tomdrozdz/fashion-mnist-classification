@@ -10,6 +10,7 @@ suffixes = [
 
 data_path = "data"
 
+
 def get_data(kind="t10k"):
     if not os.path.exists(data_path):
         os.makedirs(data_path)
