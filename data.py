@@ -47,7 +47,7 @@ def load_data(path="data", kind="t10k"):
 
     with gzip.open(images_path, "rb") as imgpath:
         images = np.frombuffer(imgpath.read(), dtype=np.uint8, offset=16).reshape(
-            len(labels), 784
+            len(labels), 28, 28
         )
 
     return images, labels
