@@ -13,7 +13,7 @@ def sort_train_labels_knn(Dist, y):
 
 
 def p_y_x_knn(y, k):
-    return np.array([np.bincount(row, minlength=M) for row in y[:, 0:k]])
+    return np.array([np.bincount(row, minlength=M) / k for row in y[:, 0:k]])
 
 
 def classification_accuracy(p_y_x, y_true):
