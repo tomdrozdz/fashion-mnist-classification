@@ -57,5 +57,20 @@ def load_all_data(path="data"):
     return load_data(path, "train"), load_data(path, "t10k")
 
 
+def get_labels():
+    return [
+        "T-shirt/top",
+        "Trouser",
+        "Pullover",
+        "Dress",
+        "Coat",
+        "Sandal",
+        "Shirt",
+        "Sneaker",
+        "Bag",
+        "Ankle boot",
+    ]
+
+
 if __name__ == "__main__":
     get_all_data()
