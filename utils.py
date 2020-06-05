@@ -5,12 +5,27 @@ import numpy as np
 def normalize(x):
     return x / 255
 
+
+# For plotting charts based on epochs
+def plot_epochs(title, values, y_label, legend, loc):
+    epochs = len(values[0])
+    x = np.arange(start=1, stop=epochs + 1)
+
+    for series in values:
+        plt.plot(x, series)
+
+    plt.title(title)
+    plt.xlabel("Epoch")
+    plt.ylabel(y_label)
+    plt.xlim([1, epochs])
+    plt.legend(legend, loc=loc)
+
+
 # Utility for displaying the images
 def show_image(img, label):
     plt.imshow(img, cmap="gray")
     plt.title(label)
     plt.axis(False)
-    plt.show()
 
 
 # For displaying incorrect classifications

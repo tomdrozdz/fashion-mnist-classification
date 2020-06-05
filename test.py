@@ -49,7 +49,8 @@ def show_errors(x_test, y_test, y_pred, predictions, labels):
         plot_predictions(y_t, y_p, pred)
 
     plt.tight_layout()
-    plt.show()
+    plt.draw()
+    plt.waitforbuttonpress(0)
 
 
 def plot_confusion_matrix(cm, labels):
@@ -68,7 +69,8 @@ def plot_confusion_matrix(cm, labels):
         plt.text(j, i, cm[i, j], horizontalalignment="center", color=color)
 
     plt.tight_layout()
-    plt.show()
+    plt.draw()
+    plt.waitforbuttonpress(0)
 
 
 if __name__ == "__main__":
@@ -92,9 +94,9 @@ if __name__ == "__main__":
 
     y_pred, predictions, accuracy = predict_classes(model, x_test, y_test)
 
-    print("Model accuracy:", accuracy)
-
-    show_errors(x_test, y_test, y_pred, predictions, labels)
+    print("\nModel accuracy:", accuracy)
 
     cm = confusion_matrix(y_test, y_pred)
     plot_confusion_matrix(cm, labels)
+
+    show_errors(x_test, y_test, y_pred, predictions, labels)
