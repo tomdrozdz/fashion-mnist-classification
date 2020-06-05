@@ -84,13 +84,15 @@ if __name__ == "__main__":
         print("Running the default testing")
         model = load_model_h5()
 
-    from data import get_data, load_data, get_labels
+    from data import get_data, load_data, get_labels, prepare_data
 
     get_data("t10k")
     x_test, y_test = load_data("t10k")
     labels = get_labels()
-
-    x_test = normalize(x_test)
+    
+    shape = (-1, 28, 28, 1)
+    
+    x_test = prepare_data(x_test, shape)
 
     y_pred, predictions, accuracy = predict_classes(model, x_test, y_test)
 

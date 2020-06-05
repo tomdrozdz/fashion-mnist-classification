@@ -1,7 +1,6 @@
 import numpy as np
-from utils import normalize
 
-M = 10
+classes = 10
 
 
 def manhattan_distance(x_test, x_train):
@@ -13,7 +12,7 @@ def sort_train_labels_knn(Dist, y):
 
 
 def p_y_x_knn(y, k):
-    return np.array([np.bincount(row, minlength=M) / k for row in y[:, 0:k]])
+    return np.array([np.bincount(row, minlength=classes) / k for row in y[:, 0:k]])
 
 
 def classification_accuracy(p_y_x, y_true):
@@ -33,7 +32,7 @@ def model_accuracy(x_train, y_train, x_test, y_test, k=5):
 
 
 if __name__ == "__main__":
-    from data import get_all_data, load_all_data
+    from data import get_all_data, load_all_data, prepare_data
 
     get_all_data()
     (x_train, y_train), (x_test, y_test) = load_all_data()
@@ -41,8 +40,8 @@ if __name__ == "__main__":
     x_train = x_train.reshape(-1, 784)
     x_test = x_test.reshape(-1, 784)
 
-    x_train = normalize(x_train)
-    x_test = normalize(x_test)
+    x_train = prepare_data(x_train)
+    x_test = prepare_data(x_test)
 
     k = 5
 

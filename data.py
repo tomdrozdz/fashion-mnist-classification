@@ -18,14 +18,14 @@ def get_data(kind="t10k"):
     print(f"Checking if {kind} data is downloaded:")
 
     for suffix in suffixes:
-        file = kind + suffix
-        current_path = os.path.join(data_path, file)
+        file_name = kind + suffix
+        current_path = os.path.join(data_path, file_name)
 
         if os.path.isfile(current_path):
-            print(f"\t{file} already downloaded")
+            print(f"\t{file_name} already downloaded")
         else:
-            print(f"\tDownloading {file}...")
-            r = requests.get(url + file)
+            print(f"\tDownloading {file_name}...")
+            r = requests.get(url + file_name)
             with open(current_path, "wb") as f:
                 f.write(r.content)
 
@@ -55,6 +55,24 @@ def load_data(kind="t10k"):
 
 def load_all_data():
     return load_data("train"), load_data("t10k")
+
+
+# Normalization 0-1
+def prepare_data(x, shape=None):
+    if shape is not None and shape != x.shape:
+        x = x.reshape(shape)
+
+    return x / 255
+
+
+def augument_data(x, y):
+    return x, y
+    # datagen = ImageDataGenerator(
+    # rotation_range=10,
+    # zoom_range=0.1,
+    # width_shift_range=0.1,
+    # height_shift_range=0.1
+    # )
 
 
 def get_labels():

@@ -1,10 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-# Normalization 0-1
-def normalize(x):
-    return x / 255
-
 
 # For plotting charts based on epochs
 def plot_epochs(title, values, y_label, legend, loc):

@@ -9,17 +9,16 @@ import tensorflow as tf
 from tensorflow import keras
 from sklearn.model_selection import train_test_split
 import numpy as np
-from utils import normalize, plot_epochs
+from utils import plot_epochs
 import matplotlib.pyplot as plt
-
 
 # Parameters
 classes = 10
 default_split = 0.15
-default_shape = (28, 28)
-default_epochs = 10
+default_shape = (28, 28, 1)
+default_epochs = 80
 default_batch_size = 250
-default_optimizer = "adam"
+default_optimizer = keras.optimizers.Adam()
 ############
 
 
@@ -28,17 +27,29 @@ def split_data(x, y, split=default_split):
     return x_train, x_val, y_train, y_val
 
 
-def cnn_model(layers=[], optimizer=default_optimizer, data_shape=default_shape):
-    layers.insert(0, keras.Input(shape=data_shape))
+def cnn_model(
+    layers=[], optimizer=default_optimizer, name=None, data_shape=default_shape
+):
+
+    layers = [keras.Input(shape=data_shape)] + layers
 
     if len(layers) == 1:
+        layers.append(keras.layers.BatchNormalization())
+        layers.append(keras.layers.Convolution2D(64, (4, 4), padding="same", activation="relu"))
+        # layers.append(keras.layers.MaxPooling2D(pool_size=(2, 2)))
+        layers.append(keras.layers.Dropout(0.1))
+        layers.append(keras.layers.Convolution2D(64, (4, 4), activation="relu"))
+        # layers.append(keras.layers.MaxPooling2D(pool_size=(2, 2)))
+        layers.append(keras.layers.Dropout(0.3))
         layers.append(keras.layers.Flatten())
         layers.append(keras.layers.Dense(256, activation="relu"))
+        layers.append(keras.layers.Dropout(0.5))
         layers.append(keras.layers.Dense(64, activation="relu"))
+        layers.append(keras.layers.BatchNormalization())
 
-    layers.append(keras.layers.Dense(classes, activation="softmax"))
+    layers.append(keras.layers.Dense(classes, activation="softmax", name="softmax"))
 
-    cnn = keras.Sequential(layers=layers)
+    cnn = keras.Sequential(layers=layers, name=name)
 
     cnn.compile(
         optimizer=optimizer,
@@ -98,14 +109,17 @@ def plot_history(model):
 
 if __name__ == "__main__":
     print("Running training for the default model")
-    from data import get_data, load_data, get_labels
+    from data import get_data, load_data, get_labels, prepare_data, augument_data
 
     get_data("train")
     x_train, y_train = load_data("train")
 
     # y_train = tf.keras.utils.to_categorical(y_train, num_classes = 10)
 
-    x_train = normalize(x_train)
+    shape = (-1, 28, 28, 1)
+    
+    x_train, y_train = augument_data(x_train, y_train)
+    x_train = prepare_data(x_train, shape)
     x_train, x_val, y_train, y_val = split_data(x_train, y_train)
 
     model = cnn_model()
