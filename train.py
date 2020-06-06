@@ -28,47 +28,23 @@ def cnn_model():
 
     cnn.add(keras.Input(shape=shape))
 
-    """
     cnn.add(keras.layers.BatchNormalization())
-    
-    cnn.add(keras.layers.Convolution2D(64, (3, 3), padding="same", activation="relu", use_bias=False))
+    cnn.add(keras.layers.Convolution2D(64, (3, 3), padding="same", activation="relu"))
+    cnn.add(keras.layers.BatchNormalization())
+    cnn.add(keras.layers.Convolution2D(64, (3, 3), padding="same", activation="relu"))
     cnn.add(keras.layers.BatchNormalization())
     cnn.add(keras.layers.MaxPooling2D(pool_size=(2, 2)))
-    cnn.add(keras.layers.Dropout(0.1))
 
-    cnn.add(keras.layers.Convolution2D(64, (3, 3), padding="same", activation="relu", use_bias=False))
+    cnn.add(keras.layers.Convolution2D(128, (3, 3), padding="same", activation="relu"))
     cnn.add(keras.layers.BatchNormalization())
     cnn.add(keras.layers.MaxPooling2D(pool_size=(2, 2)))
-    cnn.add(keras.layers.Dropout(0.2))
 
     cnn.add(keras.layers.Flatten())
 
-    cnn.add(keras.layers.Dense(256, activation="relu"))
+    cnn.add(keras.layers.Dense(512, activation="relu"))
     cnn.add(keras.layers.Dropout(0.5))
-    # cnn.add(keras.layers.BatchNormalization())
-    cnn.add(keras.layers.Dense(64, activation="relu", use_bias=False))
-    #cnn.add(keras.layers.Dropout(0.5))
-    cnn.add(keras.layers.BatchNormalization())
-    """
-
-    cnn.add(keras.layers.BatchNormalization())
-    cnn.add(keras.layers.Convolution2D(64, (3, 3), padding="same", activation="relu", use_bias=False))
-    cnn.add(keras.layers.BatchNormalization())
-    cnn.add(keras.layers.MaxPooling2D(pool_size=(2, 2)))
-
-    cnn.add(keras.layers.Convolution2D(64, (3, 3), padding="same", activation="relu", use_bias=False))
-    cnn.add(keras.layers.BatchNormalization())
-    cnn.add(keras.layers.MaxPooling2D(pool_size=(2, 2)))
-    
-    cnn.add(keras.layers.BatchNormalization())
-    cnn.add(keras.layers.Flatten())
-
     cnn.add(keras.layers.Dense(256, activation="relu"))
-    cnn.add(keras.layers.Dropout(0.5))
-    # cnn.add(keras.layers.BatchNormalization())
-    cnn.add(keras.layers.Dense(128, activation="relu", use_bias=False))
-    #cnn.add(keras.layers.Dropout(0.3))
-    cnn.add(keras.layers.BatchNormalization())
+    cnn.add(keras.layers.Dropout(0.35))
 
     cnn.add(keras.layers.Dense(classes, activation="softmax"))
 

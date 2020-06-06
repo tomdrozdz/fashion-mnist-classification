@@ -22,12 +22,12 @@ def get_random_eraser(
             if left + w <= img_w and top + h <= img_h:
                 break
 
-        #if pixel_level:
-        #    c = np.random.uniform(v_l, v_h, (h, w, img_c))
-        #else:
-        #    c = np.random.uniform(v_l, v_h)
+        if pixel_level:
+            c = np.random.uniform(v_l, v_h, (h, w, img_c))
+        else:
+            c = np.random.uniform(v_l, v_h)
 
-        input_img[top : top + h, left : left + w, :] = 0
+        input_img[top : top + h, left : left + w, :] = c
 
         return input_img
 
