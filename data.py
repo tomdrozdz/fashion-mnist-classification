@@ -1,5 +1,6 @@
 import requests
 import os
+import numpy as np
 
 url = "http://fashion-mnist.s3-website.eu-central-1.amazonaws.com/"
 
@@ -37,7 +38,6 @@ def get_all_data():
 
 def load_data(kind="t10k"):
     import gzip
-    import numpy as np
 
     images_path = os.path.join(data_path, kind + suffixes[0])
     labels_path = os.path.join(data_path, kind + suffixes[1])
@@ -47,7 +47,7 @@ def load_data(kind="t10k"):
 
     with gzip.open(images_path, "rb") as imgpath:
         images = np.frombuffer(imgpath.read(), dtype=np.uint8, offset=16).reshape(
-            len(labels), 28, 28
+            len(labels), 28, 28, 1
         )
 
     return images, labels
@@ -59,20 +59,45 @@ def load_all_data():
 
 # Normalization 0-1
 def prepare_data(x, shape=None):
-    if shape is not None and shape != x.shape:
+    if shape and shape != x.shape:
         x = x.reshape(shape)
 
     return x / 255
 
 
-def augument_data(x, y):
+def split_data(x, y, split=0.15):
+    from sklearn.model_selection import train_test_split
+
+    x_train, x_val, y_train, y_val = train_test_split(x, y, test_size=split)
+    return x_train, x_val, y_train, y_val
+
+
+def augument_data(x, y, n=3, prob=0.4, shape=(28, 28, 1)):
+    from tensorflow.keras.preprocessing.image import ImageDataGenerator
+    from erasing import get_random_eraser
+
+    eraser = get_random_eraser(p=prob)
+
+    datagen = ImageDataGenerator(
+        rotation_range=15, horizontal_flip=True, preprocessing_function=eraser
+    )
+
+    x_new = []
+    y_new = []
+
+    def gen_images():
+        for img in x:
+            img = img.reshape((1, *shape))
+            gen = datagen.flow(img, batch_size=1)
+            for i in range(n):
+                yield gen.next().reshape(shape)
+
+    x_new = np.array([img for img in gen_images()])
+
+    x = np.append(x, x_new, axis=0)
+    y = np.append(y, np.repeat(y, n))
+
     return x, y
-    # datagen = ImageDataGenerator(
-    # rotation_range=10,
-    # zoom_range=0.1,
-    # width_shift_range=0.1,
-    # height_shift_range=0.1
-    # )
 
 
 def get_labels():

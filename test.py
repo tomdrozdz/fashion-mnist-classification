@@ -9,7 +9,7 @@ from tensorflow import keras
 import numpy as np
 import itertools
 from sklearn.metrics import confusion_matrix
-from utils import normalize, plot_image_prediction, plot_predictions
+from utils import plot_image_prediction, plot_predictions
 import matplotlib.pyplot as plt
 
 
@@ -33,7 +33,9 @@ def show_errors(x_test, y_test, y_pred, predictions, labels):
     y_test = y_test[idxs]
     y_pred = y_pred[idxs]
     predictions = predictions[idxs]
-
+    
+    x_test = x_test.reshape(-1, 28, 28)
+    
     plt.figure(
         num="Examples of incorrect classifications", figsize=(2 * 2 * cols, 2 * rows)
     )
@@ -90,9 +92,7 @@ if __name__ == "__main__":
     x_test, y_test = load_data("t10k")
     labels = get_labels()
     
-    shape = (-1, 28, 28, 1)
-    
-    x_test = prepare_data(x_test, shape)
+    x_test = prepare_data(x_test)
 
     y_pred, predictions, accuracy = predict_classes(model, x_test, y_test)
 
