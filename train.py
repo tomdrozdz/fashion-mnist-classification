@@ -1,7 +1,7 @@
 import os
 import sys
 
-# Disable tensorflow INFO messages, only show warnings and errors
+# Disable tensorflow INFO messages, show only warnings and errors
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "1"
 #################################################################
 
@@ -24,29 +24,31 @@ optimizer = keras.optimizers.Adam()
 def cnn_model():
     cnn = keras.Sequential()
     
-    reg = keras.regularizers.l2(0.001)
-
     cnn.add(keras.Input(shape=shape))
     
-    cnn.add(keras.layers.Convolution2D(64, (3, 3), padding="same", activation="relu", kernel_regularizer=reg))
     cnn.add(keras.layers.BatchNormalization())
-    cnn.add(keras.layers.Convolution2D(64, (3, 3), activation="relu", kernel_regularizer=reg))
+    cnn.add(keras.layers.Convolution2D(64, (3, 3), padding="same", activation="relu"))
+    cnn.add(keras.layers.BatchNormalization())
+    cnn.add(keras.layers.Convolution2D(64, (3, 3), padding="same", activation="relu"))
     cnn.add(keras.layers.BatchNormalization())
     cnn.add(keras.layers.MaxPooling2D(pool_size=(2, 2)))
-    cnn.add(keras.layers.Dropout(0.1))
+    #cnn.add(keras.layers.Dropout(0.1))
     
-    cnn.add(keras.layers.Convolution2D(128, (3, 3), padding="same", activation="relu", kernel_regularizer=reg))
+    cnn.add(keras.layers.Convolution2D(128, (3, 3), padding="same", activation="relu"))
     cnn.add(keras.layers.BatchNormalization())
     cnn.add(keras.layers.MaxPooling2D(pool_size=(2, 2)))
-    cnn.add(keras.layers.Dropout(0.2))
+    #cnn.add(keras.layers.Dropout(0.2))
     
     cnn.add(keras.layers.Flatten())
     
-    cnn.add(keras.layers.Dense(512, activation="relu", kernel_regularizer=reg))
-    cnn.add(keras.layers.BatchNormalization())
-    cnn.add(keras.layers.Dense(256, activation="relu", kernel_regularizer=reg))
+    cnn.add(keras.layers.Dense(512, activation="relu"))
+    cnn.add(keras.layers.Dropout(0.5))
+    #cnn.add(keras.layers.BatchNormalization())
+    cnn.add(keras.layers.Dense(256, activation="relu"))
+    cnn.add(keras.layers.Dropout(0.5))
+    #cnn.add(keras.layers.BatchNormalization())
     
-    cnn.add(keras.layers.Dense(classes, activation="softmax", name="softmax"))
+    cnn.add(keras.layers.Dense(classes, activation="softmax"))
 
     cnn.compile(
         optimizer=optimizer,
