@@ -15,39 +15,61 @@ import matplotlib.pyplot as plt
 classes = 10
 split = 0.15
 shape = (28, 28, 1)
-epochs = 30
+epochs = 100
 batch_size = 250
 optimizer = keras.optimizers.Adam()
+augument = True
+data_multiplier = 3
 ############
 
 
 def cnn_model():
     cnn = keras.Sequential()
-    
+
     cnn.add(keras.Input(shape=shape))
+
+    """
+    cnn.add(keras.layers.BatchNormalization())
     
-    cnn.add(keras.layers.BatchNormalization())
-    cnn.add(keras.layers.Convolution2D(64, (3, 3), padding="same", activation="relu"))
-    cnn.add(keras.layers.BatchNormalization())
-    cnn.add(keras.layers.Convolution2D(64, (3, 3), padding="same", activation="relu"))
+    cnn.add(keras.layers.Convolution2D(64, (3, 3), padding="same", activation="relu", use_bias=False))
     cnn.add(keras.layers.BatchNormalization())
     cnn.add(keras.layers.MaxPooling2D(pool_size=(2, 2)))
-    #cnn.add(keras.layers.Dropout(0.1))
-    
-    cnn.add(keras.layers.Convolution2D(128, (3, 3), padding="same", activation="relu"))
+    cnn.add(keras.layers.Dropout(0.1))
+
+    cnn.add(keras.layers.Convolution2D(64, (3, 3), padding="same", activation="relu", use_bias=False))
     cnn.add(keras.layers.BatchNormalization())
     cnn.add(keras.layers.MaxPooling2D(pool_size=(2, 2)))
-    #cnn.add(keras.layers.Dropout(0.2))
-    
+    cnn.add(keras.layers.Dropout(0.2))
+
     cnn.add(keras.layers.Flatten())
-    
-    cnn.add(keras.layers.Dense(512, activation="relu"))
-    cnn.add(keras.layers.Dropout(0.5))
-    #cnn.add(keras.layers.BatchNormalization())
+
     cnn.add(keras.layers.Dense(256, activation="relu"))
     cnn.add(keras.layers.Dropout(0.5))
-    #cnn.add(keras.layers.BatchNormalization())
+    # cnn.add(keras.layers.BatchNormalization())
+    cnn.add(keras.layers.Dense(64, activation="relu", use_bias=False))
+    #cnn.add(keras.layers.Dropout(0.5))
+    cnn.add(keras.layers.BatchNormalization())
+    """
+
+    cnn.add(keras.layers.BatchNormalization())
+    cnn.add(keras.layers.Convolution2D(64, (3, 3), padding="same", activation="relu", use_bias=False))
+    cnn.add(keras.layers.BatchNormalization())
+    cnn.add(keras.layers.MaxPooling2D(pool_size=(2, 2)))
+
+    cnn.add(keras.layers.Convolution2D(64, (3, 3), padding="same", activation="relu", use_bias=False))
+    cnn.add(keras.layers.BatchNormalization())
+    cnn.add(keras.layers.MaxPooling2D(pool_size=(2, 2)))
     
+    cnn.add(keras.layers.BatchNormalization())
+    cnn.add(keras.layers.Flatten())
+
+    cnn.add(keras.layers.Dense(256, activation="relu"))
+    cnn.add(keras.layers.Dropout(0.5))
+    # cnn.add(keras.layers.BatchNormalization())
+    cnn.add(keras.layers.Dense(128, activation="relu", use_bias=False))
+    #cnn.add(keras.layers.Dropout(0.3))
+    cnn.add(keras.layers.BatchNormalization())
+
     cnn.add(keras.layers.Dense(classes, activation="softmax"))
 
     cnn.compile(
@@ -69,6 +91,20 @@ def train_model(
         epochs=epochs,
         batch_size=batch_size,
         validation_data=(x_val, y_val),
+        callbacks=[
+            keras.callbacks.ModelCheckpoint(
+                filepath="models/latest_loss.h5",
+                monitor="val_loss",
+                verbose=1,
+                save_best_only=True,
+            ),
+            keras.callbacks.ModelCheckpoint(
+                filepath="models/latest_acc.h5",
+                monitor="val_acc",
+                verbose=1,
+                save_best_only=True,
+            ),
+        ],
     )
 
 
@@ -96,8 +132,7 @@ def plot_history(model):
     )
 
     plt.tight_layout()
-    plt.draw()
-    plt.waitforbuttonpress(0)
+    plt.show()
 
 
 if __name__ == "__main__":
@@ -114,12 +149,14 @@ if __name__ == "__main__":
     get_data("train")
     x_train, y_train = load_data("train")
 
+    model = cnn_model()
+
     x_train, x_val, y_train, y_val = split_data(x_train, y_train)
-    #x_train, y_train = augument_data(x_train, y_train)
+    if augument:
+        x_train, y_train = augument_data(x_train, y_train, mul=data_multiplier)
+
     x_train = prepare_data(x_train)
     x_val = prepare_data(x_val)
-
-    model = cnn_model()
     train_model(model, x_train, y_train, x_val, y_val)
 
     plot_history(model)

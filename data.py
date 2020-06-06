@@ -2,6 +2,7 @@ import requests
 import os
 import numpy as np
 
+
 url = "http://fashion-mnist.s3-website.eu-central-1.amazonaws.com/"
 
 suffixes = [
@@ -72,15 +73,22 @@ def split_data(x, y, split=0.15):
     return x_train, x_val, y_train, y_val
 
 
-def augument_data(x, y, n=3, prob=0.4, shape=(28, 28, 1)):
+def augument_data(x, y, erasion_prob=0.5, mul=3, shape=(28, 28, 1)):
     from tensorflow.keras.preprocessing.image import ImageDataGenerator
     from erasing import get_random_eraser
 
-    eraser = get_random_eraser(p=prob)
+    print("Augumenting data...")
+
+    eraser = get_random_eraser(p=erasion_prob)
 
     datagen = ImageDataGenerator(
-        rotation_range=15, horizontal_flip=True, preprocessing_function=eraser
+        #rotation_range=10,
+        horizontal_flip=True,
+        preprocessing_function=eraser,
+        zoom_range=1.1,
     )
+
+    n = mul - 1
 
     x_new = []
     y_new = []

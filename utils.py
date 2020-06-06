@@ -14,6 +14,7 @@ def plot_epochs(title, values, y_label, legend, loc):
     plt.xlabel("Epoch")
     plt.ylabel(y_label)
     plt.xlim([1, epochs])
+    plt.ylim([0, 1])
     plt.legend(legend, loc=loc)
 
 
