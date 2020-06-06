@@ -32,20 +32,21 @@ def cnn_model():
     cnn.add(keras.layers.Convolution2D(64, (3, 3), padding="same", activation="relu"))
     cnn.add(keras.layers.BatchNormalization())
     cnn.add(keras.layers.Convolution2D(64, (3, 3), padding="same", activation="relu"))
-    cnn.add(keras.layers.BatchNormalization())
     cnn.add(keras.layers.MaxPooling2D(pool_size=(2, 2)))
-
+    cnn.add(keras.layers.Dropout(0.3)) # 0.2 for full_1
+    
     cnn.add(keras.layers.Convolution2D(128, (3, 3), padding="same", activation="relu"))
-    cnn.add(keras.layers.BatchNormalization())
     cnn.add(keras.layers.MaxPooling2D(pool_size=(2, 2)))
-
+    cnn.add(keras.layers.Dropout(0.4)) # 0.3 for full_1
+    
     cnn.add(keras.layers.Flatten())
 
     cnn.add(keras.layers.Dense(512, activation="relu"))
     cnn.add(keras.layers.Dropout(0.5))
     cnn.add(keras.layers.Dense(256, activation="relu"))
-    cnn.add(keras.layers.Dropout(0.35))
-
+    cnn.add(keras.layers.Dropout(0.5)) # 0.35 for full_1
+    
+    cnn.add(keras.layers.BatchNormalization())
     cnn.add(keras.layers.Dense(classes, activation="softmax"))
 
     cnn.compile(
@@ -68,12 +69,6 @@ def train_model(
         batch_size=batch_size,
         validation_data=(x_val, y_val),
         callbacks=[
-            keras.callbacks.ModelCheckpoint(
-                filepath="models/latest_loss.h5",
-                monitor="val_loss",
-                verbose=1,
-                save_best_only=True,
-            ),
             keras.callbacks.ModelCheckpoint(
                 filepath="models/latest_acc.h5",
                 monitor="val_acc",
