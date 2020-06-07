@@ -33,18 +33,18 @@ def cnn_model():
     cnn.add(keras.layers.BatchNormalization())
     cnn.add(keras.layers.Convolution2D(64, (3, 3), padding="same", activation="relu"))
     cnn.add(keras.layers.MaxPooling2D(pool_size=(2, 2)))
-    cnn.add(keras.layers.Dropout(0.3)) # 0.2 for full_1
+    cnn.add(keras.layers.Dropout(0.3)) # 0.2 for full_2
     
     cnn.add(keras.layers.Convolution2D(128, (3, 3), padding="same", activation="relu"))
     cnn.add(keras.layers.MaxPooling2D(pool_size=(2, 2)))
-    cnn.add(keras.layers.Dropout(0.4)) # 0.3 for full_1
+    cnn.add(keras.layers.Dropout(0.4)) # 0.3 for full_2
     
     cnn.add(keras.layers.Flatten())
 
     cnn.add(keras.layers.Dense(512, activation="relu"))
     cnn.add(keras.layers.Dropout(0.5))
     cnn.add(keras.layers.Dense(256, activation="relu"))
-    cnn.add(keras.layers.Dropout(0.5)) # 0.35 for full_1
+    cnn.add(keras.layers.Dropout(0.5)) # 0.35 for full_2
     
     cnn.add(keras.layers.BatchNormalization())
     cnn.add(keras.layers.Dense(classes, activation="softmax"))
@@ -134,12 +134,9 @@ if __name__ == "__main__":
 
     from models import save_model_h5
 
-    if len(sys.argv) == 2:
-        name = ""
-    else:
-        name = input(
-            f'Enter model name (leaving blank saves model as "latest"): '
-        ).strip()
+    name = input(
+        f'Enter model name (leaving blank saves model as "latest"): '
+    ).strip()
 
     if name != "":
         save_model_h5(model, name)

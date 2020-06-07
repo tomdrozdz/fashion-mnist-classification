@@ -14,10 +14,10 @@ import matplotlib.pyplot as plt
 
 
 def predict_classes(model, x_test, y_test):
+    loss, accuracy = model.evaluate(x_test, y_test)
     predictions = model.predict(x_test)
     y_pred = predictions.argmax(axis=1)
-    accuracy = np.count_nonzero(y_pred == y_test) / len(y_test)
-    return y_pred, predictions, accuracy
+    return y_pred, predictions, accuracy, loss
 
 
 def show_errors(x_test, y_test, y_pred, predictions, labels):
@@ -51,8 +51,7 @@ def show_errors(x_test, y_test, y_pred, predictions, labels):
         plot_predictions(y_t, y_p, pred)
 
     plt.tight_layout()
-    plt.draw()
-    plt.waitforbuttonpress(0)
+    plt.show()
 
 
 def plot_confusion_matrix(cm, labels):
@@ -71,8 +70,7 @@ def plot_confusion_matrix(cm, labels):
         plt.text(j, i, cm[i, j], horizontalalignment="center", color=color)
 
     plt.tight_layout()
-    plt.draw()
-    plt.waitforbuttonpress(0)
+    plt.show()
 
 
 if __name__ == "__main__":
@@ -94,10 +92,11 @@ if __name__ == "__main__":
     
     x_test = prepare_data(x_test)
 
-    y_pred, predictions, accuracy = predict_classes(model, x_test, y_test)
+    y_pred, predictions, accuracy, loss = predict_classes(model, x_test, y_test)
 
     print("\nModel accuracy:", accuracy)
-
+    print(f"Value of the loss function: {loss:.4f}")
+    
     cm = confusion_matrix(y_test, y_pred)
     plot_confusion_matrix(cm, labels)
 
