@@ -27,7 +27,7 @@ def get_random_eraser(
         else:
             c = np.random.uniform(v_l, v_h)
 
-        input_img[top : top + h, left : left + w, :] = c
+        input_img[top: top + h, left: left + w, :] = c
 
         return input_img
 

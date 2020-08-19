@@ -81,15 +81,11 @@ def augument_data(x, y, erasion_prob=0.5, mul=3, shape=(28, 28, 1)):
 
     eraser = get_random_eraser(p=erasion_prob)
 
-    datagen = ImageDataGenerator(
-        horizontal_flip=True,
-        preprocessing_function=eraser,
-    )
+    datagen = ImageDataGenerator(horizontal_flip=True, preprocessing_function=eraser)
 
     n = mul - 1
 
     x_new = []
-    y_new = []
 
     def gen_images():
         for img in x:

@@ -1,5 +1,4 @@
 import os
-import sys
 
 # Disable tensorflow INFO messages, show only warnings and errors
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "1"
@@ -33,19 +32,19 @@ def cnn_model():
     cnn.add(keras.layers.BatchNormalization())
     cnn.add(keras.layers.Convolution2D(64, (3, 3), padding="same", activation="relu"))
     cnn.add(keras.layers.MaxPooling2D(pool_size=(2, 2)))
-    cnn.add(keras.layers.Dropout(0.3)) # 0.2 for full_2
-    
+    cnn.add(keras.layers.Dropout(0.3))  # 0.2 for full_2
+
     cnn.add(keras.layers.Convolution2D(128, (3, 3), padding="same", activation="relu"))
     cnn.add(keras.layers.MaxPooling2D(pool_size=(2, 2)))
-    cnn.add(keras.layers.Dropout(0.4)) # 0.3 for full_2
-    
+    cnn.add(keras.layers.Dropout(0.4))  # 0.3 for full_2
+
     cnn.add(keras.layers.Flatten())
 
     cnn.add(keras.layers.Dense(512, activation="relu"))
     cnn.add(keras.layers.Dropout(0.5))
     cnn.add(keras.layers.Dense(256, activation="relu"))
-    cnn.add(keras.layers.Dropout(0.5)) # 0.35 for full_2
-    
+    cnn.add(keras.layers.Dropout(0.5))  # 0.35 for full_2
+
     cnn.add(keras.layers.BatchNormalization())
     cnn.add(keras.layers.Dense(classes, activation="softmax"))
 
@@ -111,7 +110,6 @@ if __name__ == "__main__":
     from data import (
         get_data,
         load_data,
-        get_labels,
         prepare_data,
         augument_data,
         split_data,
@@ -134,9 +132,7 @@ if __name__ == "__main__":
 
     from models import save_model_h5
 
-    name = input(
-        f'Enter model name (leaving blank saves model as "latest"): '
-    ).strip()
+    name = input('Enter model name (leaving blank saves model as "latest"): ').strip()
 
     if name != "":
         save_model_h5(model, name)
